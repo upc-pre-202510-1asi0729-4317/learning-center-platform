@@ -41,4 +41,16 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
                 command.postalCode(),
                 command.country());
     }
+
+    public String getFullName() {
+        return name.getFullName();
+    }
+
+    public String getEmailAddress() {
+        return emailAddress.address();
+    }
+
+    public String getStreetAddress() {
+        return streetAddress.getStreetAddress();
+    }
 }
