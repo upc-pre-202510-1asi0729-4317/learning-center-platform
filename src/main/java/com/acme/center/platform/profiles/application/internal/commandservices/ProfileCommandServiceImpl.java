@@ -1,5 +1,6 @@
 package com.acme.center.platform.profiles.application.internal.commandservices;
 
+import com.acme.center.platform.profiles.domain.exceptions.ProfileRequestException;
 import com.acme.center.platform.profiles.domain.model.aggregates.Profile;
 import com.acme.center.platform.profiles.domain.model.commands.CreateProfileCommand;
 import com.acme.center.platform.profiles.domain.model.valueobjects.EmailAddress;
@@ -21,12 +22,16 @@ public class ProfileCommandServiceImpl implements ProfileCommandService {
     @Override
     public Optional<Profile> handle(CreateProfileCommand command) {
         var emailAddress = new EmailAddress(command.email());
-        if(profileRepository.existsByEmailAddress(emailAddress)) {
+        if (profileRepository.existsByEmailAddress(emailAddress)) {
             throw new IllegalArgumentException("Profile with email address already exists");
         }
-        var profile = new Profile(command);
-        profileRepository.save(profile);
 
-        return Optional.of(profile);
+        try {
+            var profile = new Profile(command);
+            profileRepository.save(profile);
+            return Optional.of(profile);
+        } catch (Exception e) {
+            throw new ProfileRequestException(e.getMessage());
+        }
     }
 }
