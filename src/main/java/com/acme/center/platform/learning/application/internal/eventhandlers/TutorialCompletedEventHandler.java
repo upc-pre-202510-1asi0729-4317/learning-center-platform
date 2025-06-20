@@ -1,6 +1,6 @@
 package com.acme.center.platform.learning.application.internal.eventhandlers;
 
-import com.acme.center.platform.learning.domain.model.event.TutorialCompletedEvent;
+import com.acme.center.platform.learning.domain.model.events.TutorialCompletedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
