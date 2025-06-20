@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfiguration {
-
+    // Properties
     @Value("${spring.application.name}")
     String applicationName;
 
@@ -23,36 +23,40 @@ public class OpenApiConfiguration {
     @Value("${documentation.application.version}")
     String applicationVersion;
 
+    // Methods
+
     @Bean
     public OpenAPI learningPlatformOpenApi() {
 
-        var openApi = new OpenAPI();
 
-        openApi.info(
-                new Info()
-                        .title(applicationName)
-                        .description(applicationDescription)
-                        .version(applicationVersion)
+        // General configuration
+        var openApi = new OpenAPI();
+        openApi
+                .info(new Info()
+                        .title(this.applicationName)
+                        .description(this.applicationDescription)
+                        .version(this.applicationVersion)
                         .license(new License().name("Apache 2.0")
-                        .url("https://www.apache.org/licenses/LICENSE-2.0")))
-                .externalDocs(
-                        new ExternalDocumentation()
-                                .description("ACME Learning Platworm wiki Documentation")
-                                .url("https://github.com/acme/center-platform/wiki"));
+                                .url("https://springdoc.org")))
+                .externalDocs(new ExternalDocumentation()
+                        .description("ACME Learning Platform wiki Documentation")
+                        .url("https://acme-learning-platform.wiki.github.io/docs"));
+
+        // Add a security scheme
 
         final String securitySchemeName = "bearerAuth";
 
-        openApi.addSecurityItem(
-                new SecurityRequirement()
+        openApi.addSecurityItem(new SecurityRequirement()
                         .addList(securitySchemeName))
-                .components(
-                        new Components()
-                                .addSecuritySchemes(securitySchemeName,
-                                        new SecurityScheme()
-                                                .name(securitySchemeName)
-                                                .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")));
+                .components(new Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")));
+
+        // Return the OpenAPI configuration object with all the settings
 
         return openApi;
     }
