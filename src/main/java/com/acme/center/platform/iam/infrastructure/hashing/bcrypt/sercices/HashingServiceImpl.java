@@ -2,7 +2,9 @@ package com.acme.center.platform.iam.infrastructure.hashing.bcrypt.sercices;
 
 import com.acme.center.platform.iam.infrastructure.hashing.bcrypt.BCryptHashingService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class HashingServiceImpl implements BCryptHashingService {
 
     private final BCryptPasswordEncoder passwordEncoder;
